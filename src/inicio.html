@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles/style-dashboard.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <!-- Barra Superior -->
+        <header class="d-flex justify-content-between align-items-center p-3 bg-dark text-white">
+            <div class="d-flex align-items-center">
+                <img src="../assets/logo.ico" alt="Logo" id="logo" class="mr-2">
+                <h4 id="nombre-compania" class="m-0">Nombre de la Compañía</h4>
+            </div>
+            <h5 class="text-center m-0">Nivel 1</h5>
+            <div>
+                <button id="config-profile" class="btn btn-outline-light mr-2">
+                    <i class="fas fa-cog"></i> Configurar Perfil
+                </button>
+                <button id="logout" class="btn btn-outline-danger">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+        </header>
+
+        <!-- Barra Lateral y Main-Content -->
+        <div class="d-flex">
+            <!-- Barra Lateral -->
+            <nav class="bg-secondary text-white p-3" style="width: 220px; height: calc(100vh - 70px);">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a href="#" id="reservas-link" class="nav-link text-white" data-file="pages/reservas.html">Reservas</a></li>
+                    <li class="nav-item"><a href="#" id="calendario-link" class="nav-link text-white" data-file="pages/calendario.html">Calendario</a></li>
+                    <li class="nav-item"><a href="#" id="ingresos-link" class="nav-link text-white" data-file="pages/ingresos.html">Ingresos</a></li>
+                    <li class="nav-item"><a href="#" id="gastos-link" class="nav-link text-white" data-file="pages/gastos.html">Gastos</a></li>
+                    <li class="nav-item"><a href="#" id="clientes-link" class="nav-link text-white" data-file="pages/clientes.html">Clientes</a></li>
+                </ul>                
+            </nav>
+
+            <!-- Contenedor Principal -->
+            <div id="main-content" class="flex-grow-1 p-4" style="background-color: #f4f6f9;">
+                <!-- Contenido -->
+            </div>
+        </div>
+    </div>
+
+<!-- Script para cargar nombre de la compañía -->
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+    const clienteId = localStorage.getItem('clienteId');
+
+    if (clienteId) {
+        try {
+            const response = await fetch(`http://localhost:3000/getCompanyName?user_id=${clienteId}`);
+            const data = await response.json();
+
+            // Actualizar el contenido del nombre de la compañía
+            document.getElementById('nombre-compania').textContent = data.nombre_compania || '';
+        } catch (error) {
+            console.error('Error al cargar el nombre de la compañía:', error);
+        }
+    } else {
+        console.warn('No se encontró clienteId en el almacenamiento local');
+    }
+});
+</script>
+
+
+<!-- Scripts Generales -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="scripts/renderer.js"></script>
+</body>
+</html>

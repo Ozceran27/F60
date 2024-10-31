@@ -1,0 +1,44 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    height: 70px;
+}
+
+#logo {
+    width: 40px;
+    height: auto;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav .nav-link:hover {
+    background-color: #495057;
+    border-radius: 5px;
+}
+
+#main-content {
+    padding: 2rem;
+    background-color: #f4f6f9;
+}
+
+#profile-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+#profile-form .form-group label {
+    font-weight: bold;
+}
+
+#profile-form button {
+    width: 100%;
+}

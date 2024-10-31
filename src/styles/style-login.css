@@ -1,0 +1,124 @@
+body {
+    background-image: url('../../assets/fondo-inicio.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+}
+
+#logo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: auto;
+}
+
+
+.container {
+    background-color: #272e34;
+    padding: 20px;
+    border-radius: 11px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 300px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 23px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 21px;
+    color: #ffffff;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 7px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #444c57;
+    color: #ffffff;
+}
+
+
+input:focus {
+    outline: none;
+    background-color: #555d67;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 13px;
+    background-color: #4cae4c;
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    font-size: 13px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+button:hover {
+    background-color: #4cae91;
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #4cae4c;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-left: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* Estilo = casilla de verificación */
+.checkbox-container input[type="checkbox"] {
+    margin-right: 1px; 
+    padding: 1px;
+}
+
+/* Estilo = "Recordar estos datos" */
+.checkbox-container label {
+    color: white;
+    margin: 0;
+    cursor: pointer;
+    font-size: 0.65em;
+}
+
+/* Estilo = "¿Olvidaste la contraseña?" */
+#forgot-password {
+    color: rgb(194, 194, 194);
+    font-size: 0.65em;
+    margin-left: auto;
+    margin-top: 3px;
+    text-decoration: none;
+}
+#forgot-password:hover {
+    text-decoration: underline;
+}

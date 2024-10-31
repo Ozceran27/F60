@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Fubol</title>
+    <link rel="stylesheet" href="styles/style-login.css">
+</head>
+<body>
+    <img src="../assets/logo.ico" alt="Logo" id="logo">
+    <div class="container">
+        <h2>Iniciar Sesión</h2>
+        <input type="text" id="username" placeholder="Usuario" required>
+        <input type="password" id="password" placeholder="Contraseña" required>
+        <div class="checkbox-container">
+            <input type="checkbox" id="remember-me" />
+            <label for="remember-me">Recordar</label>
+            <a href="#" id="forgot-password">¿Olvidaste la contraseña?</a>
+        </div>               
+        <button id="login-button">Ingresar</button>
+        <div id="message"></div>
+    </div>
+    <script src="scripts/renderer.js"></script>
+</body>
+</html>
