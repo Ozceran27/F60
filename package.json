@@ -4,7 +4,10 @@
   "main": "src/main.js",
   "scripts": {
     "start": "concurrently \"npm run electron\" \"npm run server\"",
+    "dev": "concurrently \"npm run electronDev\" \"npm run serverDev\"",
     "electron": "electron .",
+    "electronDev": "nodemon --watch . --exec electron .",
+    "serverDev": "nodemon src/server/server.js",
     "server": "node src/server/server.js"
   },
   "keywords": [],
@@ -21,6 +24,7 @@
     "express": "^4.21.1",
     "mysql": "^2.18.1",
     "mysql2": "^3.11.3",
+    "nodemon": "^3.1.7",
     "obs-websocket-js": "^5.0.6"
   }
 }

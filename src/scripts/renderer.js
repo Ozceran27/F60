@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const configButton = document.getElementById("config-profile");
     if (configButton) {
         configButton.addEventListener("click", () => {
-            loadContent("../pages/configuracion_perfil.html");
+            loadContent("pages/configuracion_perfil.html");
         });
     } else {
         console.error("Botón Configurar Perfil no encontrado");
