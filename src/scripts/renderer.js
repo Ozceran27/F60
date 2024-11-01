@@ -1,7 +1,6 @@
+// FUNCIÓN CARGA CONTENIDO DINÁMICAMENTE -MAIN_CONTENT-
 document.addEventListener("DOMContentLoaded", () => {
     const mainContent = document.getElementById("main-content");
-
-    // Función para cargar contenido dinámicamente
 
     async function loadContent(file) {
         console.log(file);
