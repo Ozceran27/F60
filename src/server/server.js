@@ -41,12 +41,12 @@ app.post("/login", (req, res) => {
 
 // Ruta para obtener el nombre de la compañía
 app.get("/getCompanyName", (req, res) => {
-    const clienteId = req.query.user_id; // Asegúrate de enviar el ID del cliente en la query
+    const clienteId = req.query.cliente_id;
 
     const query = `
         SELECT CLIENTES.nombre_compania 
         FROM CLIENTES
-        WHERE CLIENTES.user_id = ?
+        WHERE CLIENTES.cliente_id = ?
     `;
 
     db.query(query, [clienteId], (err, results) => {
@@ -54,20 +54,17 @@ app.get("/getCompanyName", (req, res) => {
             console.error("Error al obtener datos del perfil:", err);
             return res.status(500).json({ success: false, message: "Error del servidor" });
         }
-        res.json(results[0] || {}); // Enviar un objeto vacío si no hay resultados
+        res.json(results[0] || {});
     });
 });
-// Ruta para obtener los datos del perfil del cliente
+// Ruta para Obtener datos del perfil del cliente
 app.get("/getProfileData", (req, res) => {
-    const clienteId = req.query.id; // Asegúrate de enviar el ID del cliente en la query
+    const clienteId = req.query.cliente_id;
 
     const query = `
-        SELECT clientes.id AS cliente_id, clientes.username, companias.nombre_compania, companias.cuenta_bancaria, 
-               companias.telefono, companias.email_contacto, companias.cantidad_canchas, niveles.descripcion AS nivel
-        FROM clientes 
-        JOIN companias ON clientes.id = companias.cliente_id
-        JOIN niveles ON companias.nivel_id = niveles.id
-        WHERE clientes.id = ?
+        SELECT cliente_id, nombre_compania AS nombre_compania, cuenta_bancaria, provincia_id, localidad_id, foto_perfil, username, email, telefono
+        FROM clientes
+        WHERE clientes.cliente_id = ?
     `;
 
     db.query(query, [clienteId], (err, results) => {
@@ -75,7 +72,25 @@ app.get("/getProfileData", (req, res) => {
             console.error("Error al obtener datos del perfil:", err);
             return res.status(500).json({ success: false, message: "Error del servidor" });
         }
-        res.json(results[0]);
+        res.json(results[0]); // Retorna los datos del cliente
+    });
+});
+
+// Actualizar datos del cliente
+app.post("/updateProfile", (req, res) => {
+    const { cliente_id, nombre_compania, cvu, provincia_id, localidad_id, email, telefono } = req.body;
+
+    const query = `
+        UPDATE clientes SET nombre = ?, cvu = ?, provincia_id = ?, localidad_id = ?, email = ?, telefono = ?
+        WHERE cliente_id = ?
+    `;
+
+    db.query(query, [nombre_compania, cvu, provincia_id, localidad_id, email, telefono, cliente_id], (err, results) => {
+        if (err) {
+            console.error("Error al actualizar perfil:", err);
+            return res.status(500).json({ success: false, message: "Error del servidor" });
+        }
+        res.json({ success: true, message: "Perfil actualizado exitosamente" });
     });
 });
 

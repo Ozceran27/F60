@@ -1,27 +1,48 @@
-<!-- configuracion_perfil.html -->
-<div>
-    <h3>Configuración del Perfil</h3>
-    <form id="form-perfil">
-        <div class="form-group">
-            <label for="nombre_compania">Nombre de la Compañía:</label>
-            <input type="text" id="nombre_compania" name="nombre_compania" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="cuenta_bancaria">Cuenta Bancaria:</label>
-            <input type="text" id="cuenta_bancaria" name="cuenta_bancaria" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="telefono">Teléfono:</label>
-            <input type="text" id="telefono" name="telefono" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="email_contacto">Email de Contacto:</label>
-            <input type="email" id="email_contacto" name="email_contacto" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="cantidad_canchas">Cantidad de Canchas:</label>
-            <input type="number" id="cantidad_canchas" name="cantidad_canchas" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-    </form>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración de Perfil</title>
+    <link rel="stylesheet" href="styles/style-dashboard.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Configuración de Perfil</h1>
+        <form id="perfilForm">
+            <div class="form-group">
+                <label for="nombre">Nombre de la Compañía:</label>
+                <input type="text" id="nombre" name="nombre" disabled>
+                <button type="button" onclick="activarCampo('nombre')">Editar</button>
+            </div>
+            <div class="form-group">
+                <label for="cvu">CVU:</label>
+                <input type="text" id="cvu" name="cvu" disabled>
+                <button type="button" onclick="activarCampo('cvu')">Editar</button>
+            </div>
+            <div class="form-group">
+                <label for="provincia">Provincia:</label>
+                <select id="provincia" name="provincia" disabled></select>
+                <button type="button" onclick="activarCampo('provincia')">Editar</button>
+            </div>
+            <div class="form-group">
+                <label for="localidad">Localidad:</label>
+                <select id="localidad" name="localidad" disabled></select>
+                <button type="button" onclick="activarCampo('localidad')">Editar</button>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" disabled>
+                <button type="button" onclick="activarCampo('email')">Editar</button>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Teléfono:</label>
+                <input type="text" id="telefono" name="telefono" disabled>
+                <button type="button" onclick="activarCampo('telefono')">Editar</button>
+            </div>
+            <button type="button" onclick="guardarCambios()">Guardar Cambios</button>
+        </form>
+    </div>
+    <script src="renderer.js"></script>
+</body>
+</html>
