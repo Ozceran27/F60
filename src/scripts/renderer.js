@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-//----------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------
 
 // MANEJO DEL LOGIN | MANEJO DEL LOGIN | MANEJO DEL LOGIN | MANEJO DEL LOGIN | MANEJO DEL LOGIN | MANEJO DEL LOGIN |
 document.addEventListener("DOMContentLoaded", () => {
