@@ -1,4 +1,6 @@
-// FUNCIÓN CARGA CONTENIDO DINÁMICAMENTE -MAIN_CONTENT-
+//----------------------------------------------------------------------------------------------------------------------------
+
+// CARGA CONTENIDO DINÁMICO | CARGA CONTENIDO DINÁMICO | CARGA CONTENIDO DINÁMICO | CARGA CONTENIDO DINÁMICO |
 document.addEventListener("DOMContentLoaded", () => {
     const mainContent = document.getElementById("main-content");
 
@@ -9,6 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.ok) {
                 const html = await response.text();
                 mainContent.innerHTML = html;
+
+                if (file.includes("configuracion_perfil.html")) {
+                    loadProfileData();
+                }
             } else {
                 console.error("Error al cargar el archivo:", file);
             }
@@ -27,8 +33,35 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Botón Configurar Perfil no encontrado");
     }
 
+    // Fetch a los datos de Perfil
+    async function loadProfileData() {
+        const clienteId = localStorage.getItem("clienteId");
+
+        if (clienteId) {
+            console.log("ClienteId tomado");
+            try {
+                const response = await fetch(`http://localhost:3000/getProfileData?cliente_id=${clienteId}`);
+                const data = await response.json();
+                console.log("Fetch realizado");
+
+                // Rellenar los datos en los campos
+                document.getElementById("nombre_compania").textContent = data.nombre_compania || "";
+                document.getElementById("nombre_titular").textContent = data.nombre_titular || "";
+                document.getElementById("telefono").textContent = data.telefono || "";
+                document.getElementById("email").textContent = data.email || "";
+                document.getElementById("provincia").textContent = data.provincia || "";
+                document.getElementById("localidad").textContent = data.localidad || "";
+                document.getElementById("foto_perfil").src = data.foto_perfil || "../assets/default_profile.jpg";
+                document.getElementById("foto_portada").src = data.foto_portada || "../assets/default_cover.jpg";
+                console.log("Datos de perfil cargados correctamente");
+            } catch (error) {
+                console.error("Error al cargar el perfil:", error);
+            }
+        }
+    }
+
     // Cargar contenido para los enlaces de la barra lateral
-    document.querySelectorAll(".nav-link").forEach((link) => {
+    document.querySelectorAll(".list-group-item").forEach((link) => {
         link.addEventListener("click", (e) => {
             e.preventDefault();
             const file = link.getAttribute("data-file");
@@ -37,7 +70,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// MANEJO LOGIN
+//----------------------------------------------------------------------------------------------------------------------------
+
+// MANEJO DEL LOGIN | MANEJO DEL LOGIN | MANEJO DEL LOGIN | MANEJO DEL LOGIN | MANEJO DEL LOGIN | MANEJO DEL LOGIN |
 document.addEventListener("DOMContentLoaded", () => {
     // Verificación de almacenamiento de usuario y contraseña
     const savedUsername = localStorage.getItem("username");
@@ -96,67 +131,4 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-});
-
-// CARGAR DATOS DE CONFIG. DE CLIENTES
-document.addEventListener("DOMContentLoaded", () => {
-    const clienteId = localStorage.getItem("clienteId");
-
-    // Función para obtener datos del perfil
-    async function obtenerDatosPerfil() {
-        try {
-            const response = await fetch(`http://localhost:3000/getProfileData?cliente_id=${clienteId}`);
-            const data = await response.json();
-
-            // Rellenar los campos del formulario
-            document.getElementById("nombre").value = data.nombre_compania || "";
-            document.getElementById("cvu").value = data.cuenta_bancaria || "";
-            document.getElementById("provincia").value = data.provincia_id || "";
-            document.getElementById("localidad").value = data.localidad_id || "";
-            document.getElementById("email").value = data.email || "";
-            document.getElementById("telefono").value = data.telefono || "";
-        } catch (error) {
-            console.error("Error al obtener los datos del perfil:", error);
-        }
-    }
-
-    // Función para activar un campo de edición
-    window.activarCampo = function (campoId) {
-        document.getElementById(campoId).disabled = false;
-    };
-
-    // Función para guardar los cambios
-    window.guardarCambios = async function () {
-        const data = {
-            cliente_id: clienteId,
-            nombre_compania: document.getElementById("nombre").value,
-            cvu: document.getElementById("cvu").value,
-            provincia_id: document.getElementById("provincia").value,
-            localidad_id: document.getElementById("localidad").value,
-            email: document.getElementById("email").value,
-            telefono: document.getElementById("telefono").value,
-        };
-
-        try {
-            const response = await fetch("http://localhost:3000/updateProfile", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-            if (result.success) {
-                alert("Perfil actualizado exitosamente.");
-                obtenerDatosPerfil(); // Refresca los datos para mostrar el cambio
-            } else {
-                alert("Error al actualizar perfil.");
-            }
-        } catch (error) {
-            console.error("Error al actualizar perfil:", error);
-        }
-    };
-
-    obtenerDatosPerfil(); // Cargar los datos al iniciar
 });

@@ -7,6 +7,9 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
+//----------------------------------------------------------------------------------------------------------------------------
+
+// MANEJO DEL LOGIN | MANEJO DEL LOGIN | MANEJO DEL LOGIN | MANEJO DEL LOGIN | MANEJO DEL LOGIN | MANEJO DEL LOGIN |
 app.post("/login", (req, res) => {
     const { username, password } = req.body;
 
@@ -37,8 +40,9 @@ app.post("/login", (req, res) => {
     });
 });
 
-// RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | ENDPOINTS
+//----------------------------------------------------------------------------------------------------------------------------
 
+// RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | RUTAS | ENDPOINTS
 // Ruta para obtener el nombre de la compañía
 app.get("/getCompanyName", (req, res) => {
     const clienteId = req.query.cliente_id;
@@ -62,38 +66,39 @@ app.get("/getProfileData", (req, res) => {
     const clienteId = req.query.cliente_id;
 
     const query = `
-        SELECT cliente_id, nombre_compania AS nombre_compania, cuenta_bancaria, provincia_id, localidad_id, foto_perfil, username, email, telefono
-        FROM clientes
-        WHERE clientes.cliente_id = ?
-    `;
+    SELECT 
+        CLIENTES.cliente_id AS cliente_id, 
+        CLIENTES.nombre_compania AS nombre_compania, 
+        CLIENTES.nombre_titular, 
+        CLIENTES.telefono, 
+        CLIENTES.email, 
+        CLIENTES.foto_perfil, 
+        CLIENTES.foto_portada, 
+        provincia.nombre AS provincia, 
+        localidad.nombre AS localidad
+    FROM CLIENTES
+    LEFT JOIN provincia ON clientes.provincia_id = provincia.id
+    LEFT JOIN localidad ON clientes.localidad_id = localidad.id
+    WHERE CLIENTES.cliente_id = ?
+`;
 
     db.query(query, [clienteId], (err, results) => {
         if (err) {
             console.error("Error al obtener datos del perfil:", err);
             return res.status(500).json({ success: false, message: "Error del servidor" });
         }
-        res.json(results[0]); // Retorna los datos del cliente
-    });
-});
 
-// Actualizar datos del cliente
-app.post("/updateProfile", (req, res) => {
-    const { cliente_id, nombre_compania, cvu, provincia_id, localidad_id, email, telefono } = req.body;
-
-    const query = `
-        UPDATE clientes SET nombre = ?, cvu = ?, provincia_id = ?, localidad_id = ?, email = ?, telefono = ?
-        WHERE cliente_id = ?
-    `;
-
-    db.query(query, [nombre_compania, cvu, provincia_id, localidad_id, email, telefono, cliente_id], (err, results) => {
-        if (err) {
-            console.error("Error al actualizar perfil:", err);
-            return res.status(500).json({ success: false, message: "Error del servidor" });
+        if (results.length > 0) {
+            res.json(results[0]);
+        } else {
+            res.status(404).json({ success: false, message: "Cliente no encontrado" });
         }
-        res.json({ success: true, message: "Perfil actualizado exitosamente" });
     });
 });
 
+//----------------------------------------------------------------------------------------------------------------------------
+
+// VERIFICACIONES | VERIFICACIONES | VERIFICACIONES | VERIFICACIONES | VERIFICACIONES | VERIFICACIONES | VERIFICACIONES |
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });

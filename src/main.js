@@ -2,6 +2,10 @@ const { app, BrowserWindow, screen } = require("electron");
 const path = require("path");
 const axios = require("axios");
 
+//----------------------------------------------------------------------------------------------------------------------------
+
+// CONFIG. WINDOWS & ELECTRON | CONFIG. WINDOWS & ELECTRON | CONFIG. WINDOWS & ELECTRON | CONFIG. WINDOWS & ELECTRON |
+// Inicio de la aplicación - configuración de ventana
 function createWindow() {
     const { width, height } = screen.getPrimaryDisplay().workAreaSize;
     const windowWidth = Math.floor(width * 0.7);
@@ -27,7 +31,6 @@ function createWindow() {
 
     mainWindow.loadFile("src/login.html");
 }
-
 app.whenReady().then(() => {
     createWindow();
 
@@ -38,6 +41,7 @@ app.whenReady().then(() => {
     });
 });
 
+// Cierre de la aplicación
 app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
         app.quit();

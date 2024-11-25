@@ -11,39 +11,49 @@
 <body>
     <div class="container-fluid p-0">
         <!-- Barra Superior -->
-        <header class="d-flex justify-content-between align-items-center p-3 bg-dark text-white">
+        <header class="d-flex justify-content-between align-items-center p-2 bg-dark text-white w-100">
             <div class="d-flex align-items-center">
                 <img src="../assets/logo.ico" alt="Logo" id="logo" class="mr-2">
                 <h4 id="nombre-compania" class="m-0">Nombre de la Compañía</h4>
             </div>
             <h5 class="text-center m-0">Nivel 1</h5>
             <div>
-                <button id="config-profile" class="btn btn-outline-light mr-2">
+                <button id="config-profile" class="btn btn-outline-light mr-2 btn-sm">
                     <i class="fas fa-cog"></i> Configurar Perfil
                 </button>
-                <button id="logout" class="btn btn-outline-danger">
+                <button id="logout" class="btn btn-outline-danger btn-sm">
                     <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
                 </button>
             </div>
         </header>
 
-        <!-- Barra Lateral y Main-Content -->
-        <div class="d-flex">
+        <!-- Layout Principal -->
+        <div class="d-flex flex-column flex-md-row">
             <!-- Barra Lateral -->
-            <nav class="bg-secondary text-white p-3" style="width: 220px; height: calc(100vh - 70px);">
-                <ul class="nav flex-column">
-                    <li class="nav-item"><a href="#" id="reservas-link" class="nav-link text-white" data-file="pages/reservas.html">Reservas</a></li>
-                    <li class="nav-item"><a href="#" id="calendario-link" class="nav-link text-white" data-file="pages/calendario.html">Calendario</a></li>
-                    <li class="nav-item"><a href="#" id="ingresos-link" class="nav-link text-white" data-file="pages/ingresos.html">Ingresos</a></li>
-                    <li class="nav-item"><a href="#" id="gastos-link" class="nav-link text-white" data-file="pages/gastos.html">Gastos</a></li>
-                    <li class="nav-item"><a href="#" id="clientes-link" class="nav-link text-white" data-file="pages/clientes.html">Clientes</a></li>
-                </ul>                
+            <nav class="bg-secondary bg-dark text-white p-2 d-md-block" style="width: 200px;">
+                <div class="list-group list-group-flush">
+                    <a href="#" id="reservas-link" class="list-group-item list-group-item-action bg-secondary bg-dark text-white" data-file="pages/reservas.html">
+                        <i class="fas fa-calendar-alt"></i>    Reservas
+                    </a>
+                    <a href="#" id="calendario-link" class="list-group-item list-group-item-action bg-secondary bg-dark text-white" data-file="pages/calendario.html">
+                        <i class="fas fa-calendar"></i>    Calendario
+                    </a>
+                    <a href="#" id="ingresos-link" class="list-group-item list-group-item-action bg-secondary bg-dark text-white" data-file="pages/ingresos.html">
+                        <i class="fas fa-chart-line"></i>    Ingresos
+                    </a>
+                    <a href="#" id="gastos-link" class="list-group-item list-group-item-action bg-secondary bg-dark text-white" data-file="pages/gastos.html">
+                        <i class="fas fa-chart-pie"></i>    Gastos
+                    </a>
+                    <a href="#" id="clientes-link" class="list-group-item list-group-item-action bg-secondary bg-dark text-white" data-file="pages/clientes.html">
+                        <i class="fas fa-users"></i>    Clientes
+                    </a>
+                </div>
             </nav>
 
-            <!-- Contenedor Principal -->
-            <div id="main-content" class="flex-grow-1 p-4" style="background-color: #f4f6f9;">
-                <!-- Contenido -->
-            </div>
+            <!-- Contenido Principal -->
+            <main id="main-content" class="flex-grow-1 p-4">
+                <!-- Contenido Dinámico -->
+            </main>
         </div>
     </div>
 

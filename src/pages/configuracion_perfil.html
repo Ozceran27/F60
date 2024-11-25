@@ -4,45 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configuración de Perfil</title>
-    <link rel="stylesheet" href="styles/style-dashboard.css">
+    <link rel="stylesheet" href="styles/style-profile.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Configuración de Perfil</h1>
-        <form id="perfilForm">
-            <div class="form-group">
-                <label for="nombre">Nombre de la Compañía:</label>
-                <input type="text" id="nombre" name="nombre" disabled>
-                <button type="button" onclick="activarCampo('nombre')">Editar</button>
-            </div>
-            <div class="form-group">
-                <label for="cvu">CVU:</label>
-                <input type="text" id="cvu" name="cvu" disabled>
-                <button type="button" onclick="activarCampo('cvu')">Editar</button>
-            </div>
-            <div class="form-group">
-                <label for="provincia">Provincia:</label>
-                <select id="provincia" name="provincia" disabled></select>
-                <button type="button" onclick="activarCampo('provincia')">Editar</button>
-            </div>
-            <div class="form-group">
-                <label for="localidad">Localidad:</label>
-                <select id="localidad" name="localidad" disabled></select>
-                <button type="button" onclick="activarCampo('localidad')">Editar</button>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" disabled>
-                <button type="button" onclick="activarCampo('email')">Editar</button>
-            </div>
-            <div class="form-group">
-                <label for="telefono">Teléfono:</label>
-                <input type="text" id="telefono" name="telefono" disabled>
-                <button type="button" onclick="activarCampo('telefono')">Editar</button>
-            </div>
-            <button type="button" onclick="guardarCambios()">Guardar Cambios</button>
-        </form>
+    <div class="profile-container">
+        <!-- Foto de portada -->
+        <div class="cover-photo">
+            <img id="foto_portada" src="/PROYECTOS/Fubol-Windows/Fubol/assets/default_cover.jpg" alt="Foto de portada">
+        </div>
+        
+        <!-- Foto de perfil -->
+        <div class="profile-photo">
+            <img id="foto_perfil" src="/PROYECTOS/Fubol-Windows/Fubol/assets/default_profile.jpg" alt="Foto de perfil">
+        </div>
+        
+        <!-- Información del usuario -->
+        <div class="profile-info">
+            <h1 id="nombre_compania">Nombre de la Compañía</h1>
+            <p id="nombre_titular">Titular: Nombre del Usuario</p>
+            <p id="telefono">Teléfono: 000000000</p>
+            <p id="email">Email: usuario@ejemplo.com</p>
+            <p id="provincia">Provincia: </p>
+            <p id="localidad">Localidad: </p>
+        </div>
     </div>
-    <script src="renderer.js"></script>
+    
+
+<!-- Scripts Generales -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="scripts/renderer.js"></script>
+    
 </body>
 </html>
