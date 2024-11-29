@@ -95,6 +95,31 @@ app.get("/getProfileData", (req, res) => {
         }
     });
 });
+// Ruta para actualizar datos del perfil del cliente
+app.post("/update-profile", (req, res) => {
+    const clienteId = req.body.cliente_id;
+    const { nombre_compania, nombre_titular, telefono, email, provincia, localidad } = req.body;
+
+    if (!clienteId) {
+        return res.status(400).json({ success: false, message: "Cliente ID es requerido" });
+    }
+
+    const query = `
+        UPDATE CLIENTES 
+        SET nombre_compania = ?, nombre_titular = ?, telefono = ?, email = ?
+        WHERE cliente_id = ?
+    `;
+    const values = [nombre_compania, nombre_titular, telefono, email, clienteId];
+
+    db.query(query, values, (err, result) => {
+        if (err) {
+            console.error("Error al actualizar el perfil:", err);
+            return res.status(500).json({ success: false, message: "Error al actualizar el perfil" });
+        }
+
+        res.json({ success: true, message: "Perfil actualizado correctamente" });
+    });
+});
 
 //----------------------------------------------------------------------------------------------------------------------------
 

@@ -4,11 +4,27 @@ body {
     margin: 0;
 }
 
+#info-perfil {
+    display: flex;
+    width: 100%;
+    margin: 0;
+}
+
 .profile-container {
-    max-width: 93%;
-    margin: 0 auto;
+    width: 37%;
+    margin-left: 0;
     background-color: #f4f6f9;
-    border-radius: 13px;
+    border-radius: 13px 13px 0px 0px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.profile-container-r {
+    width: 67%;
+    margin-right: 0;
+    margin-left: 1%;
+    background-color: #f4f6f9;
+    border-radius: 0px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
@@ -38,6 +54,24 @@ body {
     padding: 20px;
 }
 
+.profile-info-r {
+    text-align: right;
+    padding: 20px;
+}
+
+.profile-info-r h1 {
+    text-align: center;
+    font-size: 24px;
+    margin: 0;
+    color: #333;
+}
+
+.profile-info-r p {
+    font-size: 16px;
+    color: #666;
+    margin: 5px 0;
+}
+
 .profile-info h1 {
     font-size: 24px;
     margin: 0;
@@ -48,4 +82,30 @@ body {
     font-size: 16px;
     color: #666;
     margin: 5px 0;
+}
+
+/* Botones */
+.buttons {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.buttons .btn {
+    margin: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.editable-input {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 16px;
+    width: 80%;
+}
+
+.input-error {
+    border: 1px solid red;
+    background-color: #ffe6e6;
 }

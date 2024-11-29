@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <div class="profile-container">
+    <div id="info-perfil">
+    <span class="profile-container">
         <!-- Foto de portada -->
         <div class="cover-photo">
             <img id="foto_portada" src="/PROYECTOS/Fubol-Windows/Fubol/assets/default_cover.jpg" alt="Foto de portada">
@@ -22,21 +23,64 @@
         
         <!-- Información del usuario -->
         <div class="profile-info">
-            <h1 id="nombre_compania">Nombre de la Compañía</h1>
-            <p id="nombre_titular">Titular: Nombre del Usuario</p>
-            <p id="telefono">Teléfono: 000000000</p>
-            <p id="email">Email: usuario@ejemplo.com</p>
-            <p id="provincia">Provincia: </p>
-            <p id="localidad">Localidad: </p>
-        </div>
+    <h1 id="nombre_compania">Nombre de la Compañía</h1>
+    <div class="form-group">
+        <label for="nombre_titular">Titular:</label>
+        <input type="text" class="form-control" id="nombre_titular" data-key="nombre_titular" value="Nombre del Usuario" disabled>
     </div>
+    <div class="form-group">
+        <label for="telefono">Teléfono:</label>
+        <input type="text" class="form-control" id="telefono" data-key="telefono" value="000000000" disabled>
+    </div>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" id="email" data-key="email" value="usuario@ejemplo.com" disabled>
+    </div>
+    <div class="form-group">
+        <label for="provincia">Provincia:</label>
+        <input type="text" class="form-control" id="provincia" data-key="provincia" value="" disabled>
+    </div>
+    <div class="form-group">
+        <label for="localidad">Localidad:</label>
+        <input type="text" class="form-control" id="localidad" data-key="localidad" value="" disabled>
+    </div>
+    <div class="buttons">
+        <button id="btn-editar" class="btn btn-primary">Editar</button>
+        <button id="btn-guardar" class="btn btn-success" style="display: none;">Guardar</button>
+        <button id="btn-cancelar" class="btn btn-secondary" style="display: none;">Cancelar</button>
+    </div>
+</div>
+
+    </span>
     
+    <span class="profile-container-r">              
+        <!-- Otros datos del usuario -->
+        <div class="profile-info-r">
+            <h1>Otros Datos</h1>
+            <p>Info 1</p>
+            <p>Info 2</p>
+            <p>Info 3</p>
+            <p>Info 4</p>
+            <p>Info 5</p>
+        </div>
+        <!-- Otros datos del usuario -->
+        <div class="profile-info-r">
+            <h1>Ajustes</h1>
+            <p>Config 1</p>
+            <p>Config 2</p>
+            <p>Config 3</p>
+            <p>Config 4</p>
+            <p>Config 5</p>
+        </div>
+    </span>
+</div>
+
+
 
 <!-- Scripts Generales -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="scripts/renderer.js"></script>
-    
 </body>
 </html>
