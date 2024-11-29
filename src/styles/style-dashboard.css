@@ -57,6 +57,7 @@ nav .text-white:hover {
     background-color: #3f464e;
     padding: 2rem;
     margin-top: 8px;
+    margin-left: 8px;
     min-height: 100vh;
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
     border-radius: 13px 0px 0px;
@@ -121,3 +122,81 @@ nav .text-white:hover {
     opacity: 1;
 }
 
+/* MODO CLARO */
+body.light-mode {
+    background-color: #ffffff !important;
+    color: #212529;
+}
+
+body.light-mode header {
+    background-color: #ffffff !important;
+    color: #212529 !important;
+}
+
+body.light-mode #main-content {
+    background-color: #fafafa;
+    color: #212529;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+}
+
+
+body.light-mode nav {
+    background-color: #ffffff !important;
+    color: #212529 !important;
+}
+
+body.light-mode .list-group-item {
+    background-color: #ffffff !important;
+    color: #212529 !important;
+    transition: background-color 0.3s ease;
+}
+
+body.light-mode .list-group-item:hover {
+    background-color: #d6d8db !important;
+    color: #4cae4c !important;
+}
+
+body.light-mode a.bg-dark:focus, button.bg-dark:focus {
+    background-color: #d6d8db !important;
+    color: black !important;
+}
+
+body.light-mode a.bg-dark:hover, button.bg-dark:hover {
+    background-color: #d6d8db !important;
+    color: #4cae4c !important;
+}
+
+body.light-mode .list-group-item i {
+    color: #212529 !important;
+}
+
+body.light-mode .list-group-item i:hover {
+    color: #4cae4c !important;
+}
+
+body.light-mode #logout {
+    background-color: white;
+    color: red;
+    border-color: red;
+}
+
+body.light-mode #config-profile {
+    background-color: white;
+    color: black;
+    border-color: black;
+}
+
+body.light-mode #config-profile:hover {
+    background-color: black;
+    color: #ffffff;
+}
+
+body.light-mode #logout:hover {
+    background-color: red;
+    color: #ffffff;
+}
+
+/* Transiciones suaves */
+body, header, nav, #main-content, button {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}

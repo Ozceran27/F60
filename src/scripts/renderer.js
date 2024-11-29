@@ -268,3 +268,68 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 //---------------------------------------------------------------------------------------------------------------------------
+
+// DARK/LIGHT MODE | DARK/LIGHT MODE | DARK/LIGHT MODE | DARK/LIGHT MODE | DARK/LIGHT MODE | DARK/LIGHT MODE | DARK/LIGHT MODE |
+document.addEventListener("DOMContentLoaded", () => {
+    const switchElement = document.getElementById("darkModeSwitch");
+    const bodyElement = document.body;
+    const headerElement = document.querySelector("header");
+    const navElement = document.querySelector("nav");
+    const mainContentElement = document.getElementById("main-content");
+    const buttons = document.querySelectorAll("button");
+
+    // Función para alternar los temas
+    const toggleTheme = () => {
+        if (switchElement.checked) {
+            // Activar modo claro
+            bodyElement.classList.remove("dark-mode");
+            bodyElement.classList.add("light-mode");
+
+            headerElement.classList.add("light-mode");
+            navElement.classList.add("light-mode");
+            mainContentElement.classList.add("light-mode");
+            buttons.forEach((button) => button.classList.add("light-mode"));
+
+            localStorage.setItem("theme", "light");
+        } else {
+            // Activar modo oscuro
+            bodyElement.classList.remove("light-mode");
+            bodyElement.classList.add("dark-mode");
+
+            headerElement.classList.remove("light-mode");
+            navElement.classList.remove("light-mode");
+            mainContentElement.classList.remove("light-mode");
+            buttons.forEach((button) => button.classList.remove("light-mode"));
+
+            localStorage.setItem("theme", "dark");
+        }
+    };
+
+    // Escuchar cambios en el switch
+    switchElement.addEventListener("change", toggleTheme);
+
+    // Configurar el tema inicial según localStorage
+    // Configurar el tema inicial según localStorage
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "light") {
+        switchElement.checked = true;
+        bodyElement.classList.add("light-mode");
+
+        headerElement.classList.add("light-mode");
+        navElement.classList.add("light-mode");
+        mainContentElement.classList.add("light-mode");
+        buttons.forEach((button) => button.classList.add("light-mode"));
+    } else {
+        // Predeterminado: modo oscuro si no hay tema almacenado
+        switchElement.checked = false;
+        bodyElement.classList.add("dark-mode");
+
+        headerElement.classList.remove("light-mode");
+        navElement.classList.remove("light-mode");
+        mainContentElement.classList.remove("light-mode");
+        buttons.forEach((button) => button.classList.remove("light-mode"));
+
+        localStorage.setItem("theme", "dark"); // Guardar por defecto
+    }
+});
