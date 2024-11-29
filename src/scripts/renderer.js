@@ -108,7 +108,8 @@ function loadProfileData() {
             console.log("Datos de perfil recibidos:", data);
 
             if (data && data.cliente_id) {
-                document.getElementById("nombre_compania").value = data.nombre_compania || "Nombre de la Compañía";
+                document.getElementById("nombre_compania").textContent =
+                    data.nombre_compania || "Nombre de la Compañía";
                 document.getElementById("nombre_titular").value = data.nombre_titular || "";
                 document.getElementById("telefono").value = data.telefono || "";
                 document.getElementById("email").value = data.email || "";
