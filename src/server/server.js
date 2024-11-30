@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
-const db = require("../db/database"); // Importa la conexión desde database.js
+const db = require("../db/database");
 const app = express();
 const port = 3000;
 
@@ -73,7 +73,9 @@ app.get("/getProfileData", (req, res) => {
         CLIENTES.telefono, 
         CLIENTES.email, 
         CLIENTES.foto_perfil, 
-        CLIENTES.foto_portada, 
+        CLIENTES.foto_portada,
+        CLIENTES.provincia_id, 
+        CLIENTES.localidad_id, 
         provincia.nombre AS provincia, 
         localidad.nombre AS localidad
     FROM CLIENTES
@@ -98,7 +100,7 @@ app.get("/getProfileData", (req, res) => {
 // Ruta para actualizar datos del perfil del cliente
 app.post("/update-profile", (req, res) => {
     const clienteId = req.body.cliente_id;
-    const { nombre_compania, nombre_titular, telefono, email, provincia, localidad } = req.body;
+    const { nombre_titular, telefono, email, provincia_id, localidad_id } = req.body;
 
     if (!clienteId) {
         return res.status(400).json({ success: false, message: "Cliente ID es requerido" });
@@ -106,10 +108,10 @@ app.post("/update-profile", (req, res) => {
 
     const query = `
         UPDATE CLIENTES 
-        SET nombre_compania = ?, nombre_titular = ?, telefono = ?, email = ?
+        SET nombre_titular = ?, telefono = ?, email = ?, provincia_id = ?, localidad_id = ?
         WHERE cliente_id = ?
     `;
-    const values = [nombre_compania, nombre_titular, telefono, email, clienteId];
+    const values = [nombre_titular, telefono, email, provincia_id, localidad_id, clienteId];
 
     db.query(query, values, (err, result) => {
         if (err) {
@@ -120,6 +122,35 @@ app.post("/update-profile", (req, res) => {
         res.json({ success: true, message: "Perfil actualizado correctamente" });
     });
 });
+// Ruta para obtener todas las provincias
+app.get("/getProvincias", (req, res) => {
+    const query = "SELECT id, nombre FROM provincia";
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error("Error al obtener provincias:", err);
+            return res.status(500).json({ success: false, message: "Error del servidor" });
+        }
+        res.json(results);
+    });
+});
+// Ruta para obtener localidades según la provincia
+app.get("/getLocalidades", (req, res) => {
+    const provinciaId = req.query.provincia_id;
+
+    if (!provinciaId) {
+        return res.status(400).json({ success: false, message: "Provincia ID es requerida" });
+    }
+
+    const query = "SELECT id, nombre FROM localidad WHERE provincia_id = ?";
+    db.query(query, [provinciaId], (err, results) => {
+        if (err) {
+            console.error("Error al obtener localidades:", err);
+            return res.status(500).json({ success: false, message: "Error del servidor" });
+        }
+        res.json(results);
+    });
+});
+// Ruta para subir imágenes
 
 //----------------------------------------------------------------------------------------------------------------------------
 

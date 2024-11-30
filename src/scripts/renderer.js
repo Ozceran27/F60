@@ -87,16 +87,56 @@ document.addEventListener("DOMContentLoaded", () => {
 //---------------------------------------------------------------------------------------------------------------------------
 
 // EDITAR PERFIL | EDITAR PERFIL | EDITAR PERFIL | EDITAR PERFIL | EDITAR PERFIL | EDITAR PERFIL | EDITAR PERFIL | EDITAR PERFIL |
-//Obtener los datos de perfil
+// Obtener Provincias
+function loadProvincias(selectedProvinciaId) {
+    fetch("http://localhost:3000/getProvincias")
+        .then((response) => response.json())
+        .then((provincias) => {
+            const provinciaSelect = document.getElementById("provincia");
+            provinciaSelect.innerHTML = ""; // Limpiar opciones anteriores
+
+            provincias.forEach((provincia) => {
+                const option = document.createElement("option");
+                option.value = provincia.id;
+                option.textContent = provincia.nombre;
+                if (provincia.id === selectedProvinciaId) {
+                    option.selected = true;
+                }
+                provinciaSelect.appendChild(option);
+            });
+        })
+        .catch((error) => console.error("Error al cargar provincias:", error));
+}
+// Obtener Localidades
+function loadLocalidades(provinciaId, selectedLocalidadId) {
+    fetch(`http://localhost:3000/getLocalidades?provincia_id=${provinciaId}`)
+        .then((response) => response.json())
+        .then((localidades) => {
+            const localidadSelect = document.getElementById("localidad");
+            localidadSelect.innerHTML = ""; // Limpiar opciones anteriores
+
+            localidades.forEach((localidad) => {
+                const option = document.createElement("option");
+                option.value = localidad.id;
+                option.textContent = localidad.nombre;
+
+                // Compara ambos valores como números
+                if (parseInt(localidad.id) === parseInt(selectedLocalidadId)) {
+                    option.selected = true;
+                }
+
+                localidadSelect.appendChild(option);
+            });
+        })
+        .catch((error) => console.error("Error al cargar localidades:", error));
+}
+// Obtener los datos de perfil
 function loadProfileData() {
     const clienteId = localStorage.getItem("clienteId");
     if (!clienteId) {
         console.error("Cliente ID no encontrado en localStorage.");
         return;
     }
-
-    console.log("Obteniendo datos de perfil para clienteId:", clienteId);
-
     fetch(`http://localhost:3000/getProfileData?cliente_id=${clienteId}`)
         .then((response) => {
             if (!response.ok) {
@@ -106,24 +146,27 @@ function loadProfileData() {
         })
         .then((data) => {
             console.log("Datos de perfil recibidos:", data);
-
             if (data && data.cliente_id) {
-                document.getElementById("nombre_compania").textContent =
-                    data.nombre_compania || "Nombre de la Compañía";
+                document.getElementById("nombre_compania").textContent = data.nombre_compania || "";
                 document.getElementById("nombre_titular").value = data.nombre_titular || "";
                 document.getElementById("telefono").value = data.telefono || "";
                 document.getElementById("email").value = data.email || "";
-                document.getElementById("provincia").value = data.provincia || "";
-                document.getElementById("localidad").value = data.localidad || "";
-
+                // Cargar provincias y seleccionar la del cliente
+                loadProvincias(data.provincia_id);
+                if (data.localidad_id) {
+                    loadLocalidades(data.provincia_id, parseInt(data.localidad_id));
+                }
                 if (data.foto_perfil) {
                     document.getElementById("foto_perfil").src = data.foto_perfil;
                 }
                 if (data.foto_portada) {
                     document.getElementById("foto_portada").src = data.foto_portada;
-
                     // Almacenar datos originales para restaurar en caso de cancelar
                     originalProfileData = { ...data };
+                }
+                // Habilitar localidad si hay una provincia seleccionada
+                if (selectedProvinciaId) {
+                    loadLocalidades(selectedProvinciaId, null);
                 }
             } else {
                 console.error("Datos de perfil incompletos o no encontrados:", data);
@@ -133,11 +176,7 @@ function loadProfileData() {
             console.error("Error al obtener datos de perfil:", error);
         });
 }
-// Inicializar al cargar la página
-document.addEventListener("DOMContentLoaded", () => {
-    loadProfileData();
-    initEditProfileButtons();
-});
+// Manejo de botones en perfil
 function initEditProfileButtons() {
     const btnEditar = document.getElementById("btn-editar");
     const btnGuardar = document.getElementById("btn-guardar");
@@ -153,6 +192,11 @@ function initEditProfileButtons() {
     function habilitarEdicion() {
         inputFields.forEach((field) => {
             field.disabled = false;
+        });
+        // Carga de Provincias y Localidades
+        document.getElementById("provincia").addEventListener("change", (event) => {
+            const provinciaId = event.target.value;
+            loadLocalidades(provinciaId, null);
         });
         btnEditar.style.display = "none";
         btnGuardar.style.display = "inline-block";
@@ -178,48 +222,45 @@ function initEditProfileButtons() {
 
     // Guardar datos
     function guardarDatos() {
-        const updatedData = {};
-        inputFields.forEach((field) => {
-            const key = field.getAttribute("data-key");
-            updatedData[key] = field.value;
-            // Actualizar atributo value con el nuevo valor
-            field.setAttribute("value", field.value);
-        });
+        const updatedData = {
+            nombre_titular: document.getElementById("nombre_titular").value,
+            telefono: document.getElementById("telefono").value,
+            email: document.getElementById("email").value,
+            provincia_id: document.getElementById("provincia").value,
+            localidad_id: document.getElementById("localidad").value,
+        };
 
-        // Añadir el cliente_id al objeto de datos
         const clienteId = localStorage.getItem("clienteId");
         updatedData.cliente_id = clienteId;
 
-        // Enviar datos al servidor
         fetch("http://localhost:3000/update-profile", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(updatedData),
         })
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
                     console.log("Datos actualizados correctamente");
-                    deshabilitarEdicion(true);
-
-                    // Actualizar los datos originales con los nuevos valores
-                    originalProfileData = { ...updatedData };
                 } else {
                     console.error("Error al actualizar datos:", data.message);
                 }
             })
-            .catch((error) => {
-                console.error("Error en la solicitud:", error);
-            });
+            .catch((error) => console.error("Error al guardar datos:", error));
+        btnEditar.style.display = "inline-block";
+        btnGuardar.style.display = "none";
+        btnCancelar.style.display = "none";
     }
-
     // Asignar eventos
     btnEditar.addEventListener("click", habilitarEdicion);
     btnCancelar.addEventListener("click", () => deshabilitarEdicion(false));
     btnGuardar.addEventListener("click", guardarDatos);
 }
+// Inicializar al cargar la página
+document.addEventListener("DOMContentLoaded", () => {
+    loadProfileData();
+    initEditProfileButtons();
+});
 
 //----------------------------------------------------------------------------------------------------------------------------
 

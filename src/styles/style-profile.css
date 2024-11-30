@@ -42,8 +42,8 @@ body {
 }
 
 .profile-photo img {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     border: 4px solid #fff;
     background-color: #fff;
@@ -52,6 +52,19 @@ body {
 .profile-info {
     text-align: center;
     padding: 20px;
+    margin-top: -50px;
+}
+
+.profile-info h1 {
+    font-size: 27px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.profile-info p {
+    font-size: 16px;
+    color: #666;
+    margin: 5px 0;
 }
 
 .profile-info-r {
@@ -72,17 +85,6 @@ body {
     margin: 5px 0;
 }
 
-.profile-info h1 {
-    font-size: 24px;
-    margin: 0;
-    color: #333;
-}
-
-.profile-info p {
-    font-size: 16px;
-    color: #666;
-    margin: 5px 0;
-}
 
 /* Botones */
 .buttons {
