@@ -10,23 +10,27 @@ body {
     margin: 0;
 }
 
+/* ---------------------------------------------------------------------------------------------------------------------------- */
+
 .profile-container {
     width: 37%;
     margin-left: 0;
-    background-color: #f1f1f1;
+    background-color: #444b53;
     border-radius: 13px 13px 0px 0px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    color: #bebebe;
 }
 
 .profile-container-r {
     width: 67%;
     margin-right: 0;
     margin-left: 1%;
-    background-color: #f1f1f1;
+    background-color: #444b53;
     border-radius: 0px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    color: #bebebe;
 }
 
 .cover-photo img {
@@ -58,13 +62,7 @@ body {
 .profile-info h1 {
     font-size: 27px;
     margin-bottom: 30px;
-    color: #333;
-}
-
-.profile-info p {
-    font-size: 16px;
-    color: #666;
-    margin: 5px 0;
+    color: #f1f1f1;
 }
 
 .profile-info-r {
@@ -74,17 +72,12 @@ body {
 
 .profile-info-r h1 {
     text-align: center;
-    font-size: 24px;
+    font-size: 23px;
     margin: 0;
-    color: #333;
+    color: #f1f1f1;
 }
 
-.profile-info-r p {
-    font-size: 16px;
-    color: #666;
-    margin: 5px 0;
-}
-
+/* ---------------------------------------------------------------------------------------------------------------------------- */
 
 /* Botones */
 .buttons {
@@ -111,3 +104,25 @@ body {
     border: 1px solid red;
     background-color: #ffe6e6;
 }
+
+/* ---------------------------------------------------------------------------------------------------------------------------- */
+
+/* LIGHT MODE */
+body.light-mode .profile-container {
+    background-color: #f1f1f1;
+    color: #212529 !important;
+}
+
+body.light-mode .profile-container-r {
+    background-color: #f1f1f1;
+    color: #212529 !important;
+}
+
+body.light-mode .profile-info-r h1 {
+    color: #212529 !important;
+}
+
+body.light-mode .profile-info h1 {
+    color: #212529 !important;
+}
+

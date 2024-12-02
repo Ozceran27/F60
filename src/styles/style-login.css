@@ -14,8 +14,8 @@ body {
 #logo {
     position: absolute;
     top: 20px;
-    left: 20px;
-    width: 50px;
+    left: 25px;
+    width: 70px;
     height: auto;
 }
 
@@ -99,6 +99,7 @@ button:hover {
 
 /* Estilo = casilla de verificación */
 .checkbox-container input[type="checkbox"] {
+    width: 25px;
     margin-right: 1px; 
     padding: 1px;
 }
