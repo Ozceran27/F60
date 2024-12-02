@@ -199,6 +199,14 @@ body.light-mode #logout:hover {
     color: #ffffff;
 }
 
+body.light-mode #config-profile:focus {
+    outline: double;
+}
+
+body.light-mode #logout:focus {
+    outline: double;
+}
+
 /* Transiciones suaves */
 body, header, nav, #main-content, button {
     transition: background-color 0.3s ease, color 0.3s ease;
