@@ -1,0 +1,28 @@
+.container {
+    padding: 5px;
+}
+
+#cancha-container .card {
+    margin: 10px;
+    width: calc(50% - 20px); /* Dos por fila con margen */
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+.card-body {
+    font-size: 14px;
+}
+
+#botones-crud {
+    width: 65%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#info-crud {
+    width: 35%;
+    text-align: center;
+}

@@ -1,3 +1,92 @@
-<div>
-    <h3>Mis Canchas</h3>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración de Perfil</title>
+    <link rel="stylesheet" href="styles/style-canchas.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between mb-3">
+            <div class="d-flex justify-content-between mb-3" id="botones-crud">
+            <button id="btn-nueva-cancha" class="btn btn-outline-success btn-sm">
+                <i class="fas fa-plus-circle"></i> Nueva Cancha
+            </button>
+            <button id="btn-editar-cancha" class="btn btn-outline-warning btn-sm">
+                <i class="fas fa-edit"></i> Editar Cancha
+            </button>
+            <button id="btn-eliminar-cancha" class="btn btn-outline-danger btn-sm">
+                <i class="fas fa-trash-alt"></i> Eliminar Cancha
+            </button>
+            <button id="btn-actualizar-precios" class="btn btn-outline-primary btn-sm">
+                <i class="fas fa-dollar-sign"></i> Actualizar Precios
+            </button>
+            </div>
+            <div id="info-crud">
+                <h4>INFO CANCHAS</h4>
+                <p>info 1</p>
+            </div>
+        </div>
+        <hr>
+        <div id="cancha-container" class="row">
+            <!-- Aquí se mostrarán las fichas de las canchas -->
+        </div>
+    </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const canchaContainer = document.getElementById("cancha-container");
+    const clienteId = localStorage.getItem("clienteId");
+
+    if (!clienteId) {
+        canchaContainer.innerHTML = "<p>Error: Cliente no autenticado.</p>";
+        return;
+    }
+
+    // Actualizar Fetch para manejar errores y agregar validación de URL
+    fetch(`http://localhost:3000/canchas?cliente_id=${clienteId}`)
+        .then((response) => {
+            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+            return response.json();
+        })
+        .then((canchas) => {
+            canchaContainer.innerHTML = ""; // Limpiar contenedor
+            if (canchas.length === 0) {
+                canchaContainer.innerHTML = "<p>No se encontraron canchas.</p>";
+                return;
+            }
+
+            canchas.forEach((cancha) => {
+                const card = document.createElement("div");
+                card.className = "col-md-4";
+                card.innerHTML = `
+                    <div class="card mb-3">
+                        <div class="card-header bg-primary text-white">
+                            ${cancha.nombre} (${cancha.tipo_cancha})
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Capacidad:</strong> ${cancha.capacidad}</p>
+                            <p><strong>Precio:</strong> $${cancha.precio}</p>
+                            <p><strong>Techada:</strong> ${cancha.techada ? "Sí" : "No"}</p>
+                            <p><strong>Estado:</strong> ${cancha.estado_campo}</p>
+                        </div>
+                    </div>
+                `;
+                canchaContainer.appendChild(card);
+            });
+        })
+        .catch((err) => {
+            console.error("Error al cargar las canchas:", err.message);
+            canchaContainer.innerHTML = "<p>Ocurrió un error al cargar las canchas. Intente nuevamente más tarde.</p>";
+        });
+});
+</script>        
+<script src="scripts/renderer.js"></script>
+
+</body>
+</html>

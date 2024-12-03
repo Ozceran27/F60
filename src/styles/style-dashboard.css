@@ -51,10 +51,18 @@ nav .text-white:hover {
     color: #4cae4c !important;
 }
 
+.list-group-item i:focus{
+    color: #4cae4c;
+}
+
+nav .text-white:focus {
+    color: #4cae4c !important;
+}
+
 /* Main Content */
 #main-content {
     background-color: #3f464e;
-    padding: 2rem;
+    padding: 17px !important;
     margin-top: 8px;
     margin-left: 8px;
     min-height: 100vh;
