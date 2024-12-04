@@ -3,24 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configuración de Perfil</title>
     <link rel="stylesheet" href="styles/style-canchas.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Mis Canchas</title>
 </head>
 <body>
-
     <div class="container mt-4">
         <div class="d-flex justify-content-between mb-3">
-            <div class="d-flex justify-content-between mb-3" id="botones-crud">
+            <div class="d-flex mb-3" id="botones-crud">
             <button id="btn-nueva-cancha" class="btn btn-outline-success btn-sm">
                 <i class="fas fa-plus-circle"></i> Nueva Cancha
-            </button>
-            <button id="btn-editar-cancha" class="btn btn-outline-warning btn-sm">
-                <i class="fas fa-edit"></i> Editar Cancha
-            </button>
-            <button id="btn-eliminar-cancha" class="btn btn-outline-danger btn-sm">
-                <i class="fas fa-trash-alt"></i> Eliminar Cancha
             </button>
             <button id="btn-actualizar-precios" class="btn btn-outline-primary btn-sm">
                 <i class="fas fa-dollar-sign"></i> Actualizar Precios
@@ -37,55 +30,56 @@
         </div>
     </div>
 
-
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-    const canchaContainer = document.getElementById("cancha-container");
-    const clienteId = localStorage.getItem("clienteId");
-
-    if (!clienteId) {
-        canchaContainer.innerHTML = "<p>Error: Cliente no autenticado.</p>";
-        return;
-    }
-
-    // Actualizar Fetch para manejar errores y agregar validación de URL
-    fetch(`http://localhost:3000/canchas?cliente_id=${clienteId}`)
-        .then((response) => {
-            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-            return response.json();
-        })
-        .then((canchas) => {
-            canchaContainer.innerHTML = ""; // Limpiar contenedor
-            if (canchas.length === 0) {
-                canchaContainer.innerHTML = "<p>No se encontraron canchas.</p>";
-                return;
-            }
-
-            canchas.forEach((cancha) => {
-                const card = document.createElement("div");
-                card.className = "col-md-4";
-                card.innerHTML = `
-                    <div class="card mb-3">
-                        <div class="card-header bg-primary text-white">
-                            ${cancha.nombre} (${cancha.tipo_cancha})
+    <!-- Modal para crear una nueva cancha -->
+    <div class="modal fade" id="crearCanchaModal" tabindex="-1" role="dialog" aria-labelledby="crearCanchaLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="crearCanchaLabel">Nueva Cancha</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="crearCanchaForm">
+                        <div class="form-group">
+                            <label for="nombreCancha">Nombre de la cancha</label>
+                            <input type="text" id="nombreCancha" class="form-control" required>
                         </div>
-                        <div class="card-body">
-                            <p><strong>Capacidad:</strong> ${cancha.capacidad}</p>
-                            <p><strong>Precio:</strong> $${cancha.precio}</p>
-                            <p><strong>Techada:</strong> ${cancha.techada ? "Sí" : "No"}</p>
-                            <p><strong>Estado:</strong> ${cancha.estado_campo}</p>
+                        <div class="form-group">
+                            <label for="tipoCancha">Tipo de cancha</label>
+                            <select id="tipoCancha" class="form-control">
+                                <option value="Fútbol 5">Fútbol 5</option>
+                                <option value="Fútbol 7">Fútbol 7</option>
+                                <option value="Fútbol 11">Fútbol 11</option>
+                            </select>
                         </div>
-                    </div>
-                `;
-                canchaContainer.appendChild(card);
-            });
-        })
-        .catch((err) => {
-            console.error("Error al cargar las canchas:", err.message);
-            canchaContainer.innerHTML = "<p>Ocurrió un error al cargar las canchas. Intente nuevamente más tarde.</p>";
-        });
-});
-</script>        
+                        <div class="form-group">
+                            <label for="capacidadCancha">Capacidad</label>
+                            <input type="number" id="capacidadCancha" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="precioCancha">Precio por hora</label>
+                            <input type="number" id="precioCancha" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="techadaCancha">¿Techada?</label>
+                            <select id="techadaCancha" class="form-control">
+                                <option value="true">Sí</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="estadoCampo">Estado del campo</label>
+                            <input type="text" id="estadoCampo" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Crear</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 <script src="scripts/renderer.js"></script>
 
 </body>

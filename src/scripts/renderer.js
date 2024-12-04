@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //---------------------------------------------------------------------------------------------------------------------------
 
-// EDITAR PERFIL | EDITAR PERFIL | EDITAR PERFIL | EDITAR PERFIL | EDITAR PERFIL | EDITAR PERFIL | EDITAR PERFIL | EDITAR PERFIL |
+// FUNCIONES GENERALES | FUNCIONES GENERALES | FUNCIONES GENERALES | FUNCIONES GENERALES | FUNCIONES GENERALES | FUNCIONES GENERALES |
 // Obtener Provincias
 function loadProvincias(selectedProvinciaId) {
     fetch("http://localhost:3000/getProvincias")
@@ -256,11 +256,160 @@ function initEditProfileButtons() {
     btnCancelar.addEventListener("click", () => deshabilitarEdicion(false));
     btnGuardar.addEventListener("click", guardarDatos);
 }
-// Inicializar al cargar la página
-document.addEventListener("DOMContentLoaded", () => {
-    loadProfileData();
-    initEditProfileButtons();
-});
+// Cargar canchas
+function getCanchas() {
+    const canchaContainer = document.getElementById("cancha-container");
+    const clienteId = localStorage.getItem("clienteId");
+
+    if (!clienteId) {
+        console.error("Cliente ID no encontrado en localStorage.");
+        return;
+    }
+
+    if (canchaContainer) {
+        canchaContainer.innerHTML = "<p>Cargando canchas...</p>";
+        fetch(`http://localhost:3000/ObtenerCanchas?cliente_id=${clienteId}`)
+            .then((response) => {
+                if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+                return response.json();
+            })
+            .then((canchas) => {
+                canchaContainer.innerHTML = ""; // Limpiar contenedor
+
+                if (!canchas || canchas.length === 0) {
+                    canchaContainer.innerHTML = "<p>No se encontraron canchas.</p>";
+                    return;
+                }
+
+                // Renderizar cada cancha
+                canchas.forEach((cancha) => {
+                    const card = document.createElement("div");
+                    card.className = "d-flex col justify-content-center";
+                    card.innerHTML = `
+                        <div class="card">
+                            <div class="card-header bg-dark text-white">
+                                <h3> ${cancha.nombre} </h3>
+                                <p> (${cancha.tipo_cancha}) </p>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Capacidad:</strong> ${cancha.capacidad}</p>
+                                <p><strong>Precio:</strong> $${cancha.precio}</p>
+                                <p><strong>Techada:</strong> ${cancha.techada ? "Sí" : "No"}</p>
+                                <p><strong>Estado:</strong> ${cancha.estado_campo}</p>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                            <button id="btn-eliminar-cancha" data-cancha-id="${
+                                cancha.cancha_id
+                            }" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i> Eliminar Cancha
+                            </button>
+                            <button id="btn-editar-cancha" data-cancha-id="${
+                                cancha.cancha_id
+                            }" class="btn btn-outline-dark btn-sm">
+                                <i class="fas fa-edit"></i> Editar Cancha
+                            </button>
+                            </div>
+                        </div>
+                    `;
+                    canchaContainer.appendChild(card);
+                });
+
+                // Agregar eventos a los botones de eliminar
+                agregarEventosEliminar();
+            })
+            .catch((err) => {
+                console.error("Error al cargar las canchas:", err.message);
+                canchaContainer.innerHTML =
+                    "<p>Ocurrió un error al cargar las canchas. Intente nuevamente más tarde.</p>";
+            });
+    } else {
+        console.error("Contenedor de canchas no encontrado en el DOM.");
+    }
+}
+// Crear canchas
+function createCanchas() {
+    // Manejar el botón "Nueva Cancha"
+    const btnNuevaCancha = document.getElementById("btn-nueva-cancha");
+    const crearCanchaModal = new bootstrap.Modal(document.getElementById("crearCanchaModal"));
+    const crearCanchaForm = document.getElementById("crearCanchaForm");
+
+    if (btnNuevaCancha && crearCanchaForm) {
+        btnNuevaCancha.addEventListener("click", () => {
+            crearCanchaModal.show();
+        });
+
+        crearCanchaForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const clienteId = localStorage.getItem("clienteId");
+            if (!clienteId) {
+                alert("Error: Cliente no identificado.");
+                return;
+            }
+
+            const nuevaCancha = {
+                cliente_id: clienteId,
+                nombre: document.getElementById("nombreCancha").value,
+                tipo_cancha: document.getElementById("tipoCancha").value,
+                capacidad: document.getElementById("capacidadCancha").value,
+                precio: document.getElementById("precioCancha").value,
+                techada: document.getElementById("techadaCancha").value === "true",
+                estado_campo: document.getElementById("estadoCampo").value,
+            };
+
+            fetch("http://localhost:3000/createCanchas", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(nuevaCancha),
+            })
+                .then((response) => {
+                    if (!response.ok) throw new Error("Error al crear la cancha.");
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data.success) {
+                        crearCanchaModal.hide();
+                        getCanchas(); // Actualizar la lista de canchas
+                    } else {
+                        alert("Error: No se pudo crear la cancha.");
+                    }
+                })
+                .catch((err) => console.error("Error al crear la cancha:", err));
+        });
+    }
+}
+// Eliminar cancha
+function eliminarCancha(canchaId) {
+    const confirmacion = confirm("¿Estás seguro de que deseas eliminar esta cancha?");
+    if (!confirmacion) return;
+
+    fetch(`http://localhost:3000/deleteCancha/${canchaId}`, {
+        method: "DELETE",
+    })
+        .then((response) => {
+            if (!response.ok) throw new Error("Error al eliminar la cancha.");
+            return response.json();
+        })
+        .then((data) => {
+            if (data.success) {
+                alert("Cancha eliminada con éxito.");
+                getCanchas(); // Actualizar la lista de canchas
+            } else {
+                alert("Error: No se pudo eliminar la cancha.");
+            }
+        })
+        .catch((err) => console.error("Error al eliminar la cancha:", err));
+}
+// Evento al botón de eliminar
+function agregarEventosEliminar() {
+    const botonesEliminar = document.querySelectorAll("#btn-eliminar-cancha");
+    botonesEliminar.forEach((boton, index) => {
+        boton.addEventListener("click", () => {
+            const canchaId = boton.dataset.canchaId; // Obtener ID de la cancha desde un atributo personalizado
+            eliminarCancha(canchaId);
+        });
+    });
+}
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -279,6 +428,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (file.includes("configuracion_perfil.html")) {
                     loadProfileData();
                     initEditProfileButtons();
+                }
+                if (file.includes("mis_canchas.html")) {
+                    getCanchas();
+                    createCanchas();
                 }
             } else {
                 console.error("Error al cargar el archivo:", file);

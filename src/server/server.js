@@ -152,17 +152,20 @@ app.get("/getLocalidades", (req, res) => {
 });
 
 // Ruta para obtener todas las canchas de un cliente
-app.get("/canchas", (req, res) => {
+app.get("/ObtenerCanchas", (req, res) => {
     const clienteId = req.query.cliente_id;
 
-    if (!clienteId) {
-        return res.status(400).json({ error: "El ID del cliente es obligatorio." });
-    }
-
     const query = `
-        SELECT cancha_id, nombre, tipo_cancha, capacidad, precio, techada, estado_campo 
-        FROM canchas 
-        WHERE cliente_id = ?
+        SELECT 
+            CANCHAS.cancha_id, 
+            CANCHAS.nombre, 
+            CANCHAS.tipo_cancha, 
+            CANCHAS.capacidad, 
+            CANCHAS.precio, 
+            CANCHAS.techada, 
+            CANCHAS.estado_campo 
+            FROM canchas 
+            WHERE cliente_id = ?
     `;
     db.query(query, [clienteId], (err, results) => {
         if (err) {
@@ -172,72 +175,41 @@ app.get("/canchas", (req, res) => {
         res.status(200).json(results);
     });
 });
-// Ruta para crear una nueva cancha
-app.post("/canchas", (req, res) => {
-    const {
-        nombre,
-        tipo_cancha,
-        capacidad,
-        cliente_id,
-        descripcion,
-        precio,
-        techada,
-        dimensiones,
-        estado_campo,
-        capacidad_recomendada,
-    } = req.body;
+// Ruta para crear una cancha
+app.post("/createCanchas", (req, res) => {
+    const { nombre, tipo_cancha, capacidad, cliente_id, precio, techada, estado_campo } = req.body;
 
-    // Verificar si el cliente ya tiene 4 canchas
-    const checkQuery = "SELECT COUNT(*) AS total_canchas FROM canchas WHERE cliente_id = ?";
-    db.query(checkQuery, [cliente_id], (err, results) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send({ error: "Error al verificar el límite de canchas" });
-        }
-
-        if (results[0].total_canchas >= 4) {
-            return res.status(400).send({ error: "Límite máximo de canchas alcanzado" });
-        }
-
-        // Insertar la nueva cancha
-        const insertQuery = `INSERT INTO canchas 
-            (nombre, tipo_cancha, capacidad, cliente_id, descripcion, precio, techada, dimensiones, estado_campo, capacidad_recomendada)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-        db.query(
-            insertQuery,
-            [
-                nombre,
-                tipo_cancha,
-                capacidad,
-                cliente_id,
-                descripcion,
-                precio,
-                techada,
-                dimensiones,
-                estado_campo,
-                capacidad_recomendada,
-            ],
-            (err, result) => {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).send({ error: "Error al crear la cancha" });
-                }
-                res.json({ success: true, cancha_id: result.insertId });
+    const insertQuery = `
+        INSERT INTO canchas 
+        (nombre, tipo_cancha, capacidad, cliente_id, precio, techada, estado_campo) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    db.query(
+        insertQuery,
+        [nombre, tipo_cancha, capacidad, cliente_id, precio, techada, estado_campo],
+        (err, result) => {
+            if (err) {
+                console.error("Error al crear la cancha:", err);
+                return res.status(500).json({ error: "Error del servidor al crear la cancha." });
             }
-        );
-    });
+            res.status(201).json({ success: true, cancha_id: result.insertId });
+        }
+    );
 });
 // Ruta para eliminar una cancha
-app.delete("/canchas/:cancha_id", (req, res) => {
-    const { cancha_id } = req.params;
+app.delete("/deleteCancha/:canchaId", (req, res) => {
+    const { canchaId } = req.params;
 
-    const query = "DELETE FROM canchas WHERE cancha_id = ?";
-    db.query(query, [cancha_id], (err) => {
+    const deleteQuery = "DELETE FROM canchas WHERE cancha_id = ?";
+    db.query(deleteQuery, [canchaId], (err, result) => {
         if (err) {
-            console.error(err);
-            return res.status(500).send({ error: "Error al eliminar la cancha" });
+            console.error("Error al eliminar la cancha:", err);
+            return res.status(500).json({ error: "Error del servidor al eliminar la cancha." });
         }
-        res.json({ success: true });
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: "Cancha no encontrada." });
+        }
+        res.status(200).json({ success: true, message: "Cancha eliminada con éxito." });
     });
 });
 

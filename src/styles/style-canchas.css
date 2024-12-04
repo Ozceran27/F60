@@ -3,8 +3,28 @@
 }
 
 #cancha-container .card {
-    margin: 10px;
-    width: calc(50% - 20px); /* Dos por fila con margen */
+    margin-left: 0;
+    background-color: #f1f1f1;
+    color: #212529;
+    border-radius: 13px 13px 0px 0px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: calc(50% - 10px); /* Dos por fila con margen */
+    max-width: 90% !important;
+}
+
+.card {
+    border: none !important;
+    width: 90% !important;
+    transition: all 0.7s ease;
+    padding-bottom: 20px;
+}
+
+.card:hover {
+    -webkit-transform:scale(1.07);
+    transform:scale(1.07);
+    transition: all 0.7s ease;
+    border: none !important;
 }
 
 .card-title {
@@ -18,8 +38,22 @@
 #botones-crud {
     width: 65%;
     display:flex;
-    justify-content: center;
+    justify-content:left;
     align-items: center;
+}
+
+#btn-nueva-cancha {
+    margin-right: 20px;
+}
+
+#btn-eliminar-cancha {
+    width: 45%;
+    margin-left: 10px;
+}
+
+#btn-editar-cancha {
+    width: 45%;
+    margin-right: 10px;
 }
 
 #info-crud {
