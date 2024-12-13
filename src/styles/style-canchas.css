@@ -2,23 +2,24 @@
     padding: 5px;
 }
 
-#cancha-container .card {
+#cancha-container {
+    width: 100%;
+}
+
+.card {
     margin-left: 0;
-    background-color: #f1f1f1;
+    background-color: #fefefe;
     color: #212529;
     border-radius: 13px 13px 0px 0px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    width: calc(50% - 10px); /* Dos por fila con margen */
-    max-width: 90% !important;
-}
-
-.card {
     border: none !important;
-    width: 90% !important;
+    width: 100% !important;
     transition: all 0.7s ease;
     padding-bottom: 20px;
 }
+
+
 
 .card:hover {
     -webkit-transform:scale(1.07);
@@ -29,6 +30,13 @@
 
 .card-title {
     font-weight: bold;
+}
+
+.card-header {
+    background-image: url('../../assets/fondo-canchas.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .card-body {
@@ -47,13 +55,15 @@
 }
 
 #btn-eliminar-cancha {
-    width: 45%;
+    width: 40%;
     margin-left: 10px;
+    border-radius: 13px;
 }
 
 #btn-editar-cancha {
-    width: 45%;
+    width: 40%;
     margin-right: 10px;
+    border-radius: 13px;
 }
 
 #info-crud {

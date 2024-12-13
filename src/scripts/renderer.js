@@ -1,5 +1,6 @@
 // Variable para almacenar los valores originales del perfil
 let originalProfileData = {};
+let canchaAEliminarId = null;
 
 //---------------------------------------------------------------------------------------------------------------------------
 
@@ -256,16 +257,16 @@ function initEditProfileButtons() {
     btnCancelar.addEventListener("click", () => deshabilitarEdicion(false));
     btnGuardar.addEventListener("click", guardarDatos);
 }
+
+// CRUD - CANCHAS |
 // Cargar canchas
 function getCanchas() {
     const canchaContainer = document.getElementById("cancha-container");
     const clienteId = localStorage.getItem("clienteId");
-
     if (!clienteId) {
         console.error("Cliente ID no encontrado en localStorage.");
         return;
     }
-
     if (canchaContainer) {
         canchaContainer.innerHTML = "<p>Cargando canchas...</p>";
         fetch(`http://localhost:3000/ObtenerCanchas?cliente_id=${clienteId}`)
@@ -280,7 +281,6 @@ function getCanchas() {
                     canchaContainer.innerHTML = "<p>No se encontraron canchas.</p>";
                     return;
                 }
-
                 // Renderizar cada cancha
                 canchas.forEach((cancha) => {
                     const card = document.createElement("div");
@@ -300,20 +300,19 @@ function getCanchas() {
                             <div class="d-flex justify-content-between align-items-center">
                             <button id="btn-eliminar-cancha" data-cancha-id="${
                                 cancha.cancha_id
-                            }" class="btn btn-outline-danger btn-sm">
-                                <i class="fas fa-trash-alt"></i> Eliminar Cancha
+                            }" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i> Eliminar
                             </button>
                             <button id="btn-editar-cancha" data-cancha-id="${
                                 cancha.cancha_id
-                            }" class="btn btn-outline-dark btn-sm">
-                                <i class="fas fa-edit"></i> Editar Cancha
+                            }" class="btn btn-success btn-sm">
+                                <i class="fas fa-edit"></i> Editar
                             </button>
                             </div>
                         </div>
                     `;
                     canchaContainer.appendChild(card);
                 });
-
                 // Agregar eventos a los botones de eliminar
                 agregarEventosEliminar();
             })
@@ -328,25 +327,29 @@ function getCanchas() {
 }
 // Crear canchas
 function createCanchas() {
-    // Manejar el botón "Nueva Cancha"
     const btnNuevaCancha = document.getElementById("btn-nueva-cancha");
     const crearCanchaModal = new bootstrap.Modal(document.getElementById("crearCanchaModal"));
     const crearCanchaForm = document.getElementById("crearCanchaForm");
+    const camposFormulario = crearCanchaForm.querySelectorAll("input, select, textarea");
 
     if (btnNuevaCancha && crearCanchaForm) {
+        // Mostrar el modal y resetear campos
         btnNuevaCancha.addEventListener("click", () => {
+            crearCanchaForm.reset();
+            camposFormulario.forEach((campo) => {
+                campo.disabled = false;
+            });
+            document.activeElement.blur();
             crearCanchaModal.show();
         });
-
+        // Manejo del envío del formulario
         crearCanchaForm.addEventListener("submit", (event) => {
             event.preventDefault();
-
             const clienteId = localStorage.getItem("clienteId");
             if (!clienteId) {
                 alert("Error: Cliente no identificado.");
                 return;
             }
-
             const nuevaCancha = {
                 cliente_id: clienteId,
                 nombre: document.getElementById("nombreCancha").value,
@@ -356,7 +359,6 @@ function createCanchas() {
                 techada: document.getElementById("techadaCancha").value === "true",
                 estado_campo: document.getElementById("estadoCampo").value,
             };
-
             fetch("http://localhost:3000/createCanchas", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -369,7 +371,7 @@ function createCanchas() {
                 .then((data) => {
                     if (data.success) {
                         crearCanchaModal.hide();
-                        getCanchas(); // Actualizar la lista de canchas
+                        getCanchas();
                     } else {
                         alert("Error: No se pudo crear la cancha.");
                     }
@@ -379,11 +381,8 @@ function createCanchas() {
     }
 }
 // Eliminar cancha
-function eliminarCancha(canchaId) {
-    const confirmacion = confirm("¿Estás seguro de que deseas eliminar esta cancha?");
-    if (!confirmacion) return;
-
-    fetch(`http://localhost:3000/deleteCancha/${canchaId}`, {
+function eliminarCancha() {
+    fetch(`http://localhost:3000/deleteCancha/${canchaAEliminarId}`, {
         method: "DELETE",
     })
         .then((response) => {
@@ -392,22 +391,42 @@ function eliminarCancha(canchaId) {
         })
         .then((data) => {
             if (data.success) {
+                const modal = bootstrap.Modal.getInstance(document.getElementById("modalConfirmacion"));
+                modal.hide();
                 alert("Cancha eliminada con éxito.");
-                getCanchas(); // Actualizar la lista de canchas
+                getCanchas();
             } else {
                 alert("Error: No se pudo eliminar la cancha.");
             }
         })
         .catch((err) => console.error("Error al eliminar la cancha:", err));
 }
-// Evento al botón de eliminar
+// Agregar eventos a los botones de eliminar
 function agregarEventosEliminar() {
     const botonesEliminar = document.querySelectorAll("#btn-eliminar-cancha");
-    botonesEliminar.forEach((boton, index) => {
+    const modalConfirmacion = new bootstrap.Modal(document.getElementById("modalConfirmacion"));
+    const btnConfirmarEliminacion = document.getElementById("btnConfirmarEliminacion");
+
+    botonesEliminar.forEach((boton) => {
         boton.addEventListener("click", () => {
-            const canchaId = boton.dataset.canchaId; // Obtener ID de la cancha desde un atributo personalizado
-            eliminarCancha(canchaId);
+            // Obtener el ID de la cancha a eliminar
+            canchaAEliminarId = boton.dataset.canchaId;
+            // Mostrar el modal de confirmación
+            modalConfirmacion.show();
         });
+    });
+    // Evento para el botón "Cancelar" en el modal
+    document.querySelector("#modalConfirmacion .btn-secondary").addEventListener("click", () => {
+        // Cerrar el modal
+        modalConfirmacion.hide();
+    });
+    // Evento para el botón "Confirmar" en el modal
+    btnConfirmarEliminacion.addEventListener("click", () => {
+        if (canchaAEliminarId) {
+            eliminarCancha(canchaAEliminarId);
+        }
+        modalConfirmacion.hide();
+        getCanchas();
     });
 }
 

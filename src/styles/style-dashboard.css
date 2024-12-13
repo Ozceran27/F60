@@ -59,6 +59,18 @@ nav .text-white:focus {
     color: #4cae4c !important;
 }
 
+/* Botones */
+#config-profile {
+    background-color: white;
+    color: black;
+    border-color: black;
+}
+
+#config-profile:hover {
+    background-color: black;
+    color: #ffffff;
+}
+
 /* Main Content */
 #main-content {
     background-color: #3f464e;
@@ -205,14 +217,6 @@ body.light-mode #config-profile:hover {
 body.light-mode #logout:hover {
     background-color: red;
     color: #ffffff;
-}
-
-body.light-mode #config-profile:focus {
-    outline: double;
-}
-
-body.light-mode #logout:focus {
-    outline: double;
 }
 
 /* Transiciones suaves */
