@@ -33,10 +33,11 @@
 }
 
 .card-header {
-    background-image: url('../../assets/fondo-canchas.jpg');
+    background-image: url('../../assets/img-canchas/fondo-canchas-1.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    height: 150px;
 }
 
 .card-body {
